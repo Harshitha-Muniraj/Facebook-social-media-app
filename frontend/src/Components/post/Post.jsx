@@ -10,16 +10,24 @@ const Post = ({post}) => {
     const [like,setLike]=useState(post.likes.length);
     const [isLiked,setIsLiked]=useState(false);
     const [user,setUser]=useState({});
-   
+   const id=localStorage.getItem("userid")
     useEffect(()=>{
       const fetchUser=async()=>{
         const response=await axios.get(`http://localhost:5000/api/users/${post.postedby}`);
         setUser(await response.data.data)
+        console.log(user)
       }
       fetchUser() 
     },[post.postedby])
-
-    function likeHandler(){
+useEffect(()=>{
+  setIsLiked(post.likes.includes(id))
+},[id,post.likes])
+    async function likeHandler(){
+      try{
+        await axios.put("http://localhost:5000/api/posts/"+post._id+"/like",{userId:id})
+      }catch(err){
+       
+      }
        setLike(isLiked?like-1:like+1);
        setIsLiked(!isLiked)
     }
@@ -46,7 +54,7 @@ const Post = ({post}) => {
                 <div className="postBottomLeft">
                  <img src='https://e7.pngegg.com/pngimages/140/830/png-clipart-like-logo-facebook-like-button-facebook-like-button-computer-icons-like-miscellaneous-blue-thumbnail.png'onClick={likeHandler} className="likeIcon" alt="thumbsup" />
                  <img src='https://www.pngfind.com/pngs/m/6-62693_facebook-heart-transparent-facebook-heart-icon-hd-png.png' className="likeIcon" onClick={likeHandler} alt="heartpic" />
-                 <span className='postLikeCounter'>{like} ppl liked it</span>
+                 <span className='postLikeCounter' onClick={()=>likeHandler}>{like} ppl liked it</span>
                 </div>
                 <div className="postBottomRight">
                    <span className="postCommentText">{post.comment} comments</span> 

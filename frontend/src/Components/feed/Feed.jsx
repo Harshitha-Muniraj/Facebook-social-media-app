@@ -2,32 +2,38 @@ import React, { useEffect, useState } from 'react';
 import './Feed.css';
 import Share from '../share/Share';
 import Post from '../post/Post';
-// import { Posts } from '../../PostData';
-import axios from 'axios'
+import api from '../../customAxios/Axios';
+import axios from 'axios';
 
-const Feed = ({userid}) => {
+
+const Feed = ({userid,token}) => {
+  const id=localStorage.getItem("userid")
   const [posts,setPosts]=useState([]);
-  console.log("posts",posts)
+  console.log("posts",id)
   useEffect(()=>{
-    {userid ? fetchMyPosts() : fetchPosts()}
+    
    async function fetchMyPosts(){
 
-      const response=await axios.get(`/posts/getmyposts/${userid}`);
+      const response=await api.get(`/posts/getmyposts/${userid}`);
       setPosts(await response.data.data)
-     
+      console.log("iddd",userid)
     }
     async function fetchPosts(){
-
-      const response=await axios.get('/posts/timeline/659d4af210ca1288aca7f620');
-      setPosts(await response.data.data)
+      
+      const response=await api.get("/posts/timeline/"+id);
+      console.log("................")
+      setPosts(await response.data.data.sort((p1,p2)=>{
+        return new Date(p2.createdAt)-new Date(p1.createdAt)
+      }))
       
     }
+    {userid ? fetchMyPosts() : fetchPosts()}
      
-  },[])
+  },[userid,])
   return (
     <div className='feed'>
       <div className='feedWrapper'>
-      <Share/>
+      <Share token={token}/>
       {
        posts.map((post)=> <Post key={post._id} post={post}/>)
       }

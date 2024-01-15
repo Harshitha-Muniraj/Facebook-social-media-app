@@ -6,9 +6,10 @@ import Rightbar from '../../Components/rightbar/Rightbar';
 import './Home.css'
 
 const Home = () => {
+  const userpic=localStorage.getItem("userpic")
   return (
     <div>
-    <TopBar/>
+    <TopBar userpic={userpic}/>
     <div className="homeContainer">
       <Sidebar/>
       <Feed/>

@@ -6,20 +6,19 @@ import Feed from '../../Components/feed/Feed';
 import Rightbar from '../../Components/rightbar/Rightbar';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
+import api from '../../customAxios/Axios';
 
 const Profile = () => {
 
   const [user,setUser]=useState([]);
   const {id}=useParams();
-  const PF=process.env.REACT_APP_PUBLIC_FOLDER
- let token;
+  
+ 
   useEffect(()=>{
     const fetchUser=async()=>{
-      const response= await axios.get(`/users/${id}`);
+      const response= await api.get(`/users/${id}`);
       setUser(await response.data.data);
-      token=response.data.data.token;
-      console.log(token)
+     
     }
     fetchUser()
   },[])
@@ -34,6 +33,7 @@ const Profile = () => {
       <div className="profileRight">
         <div className="profileRightTop">
             <div className="profileCover">
+              
                 <img src={user.coverPicture || 'https://addons-media.operacdn.com/media/CACHE/images/themes/75/230075/1.0-rev1/images/cd48e4fdc5f3290c815d4a5e4635b034/5b3c5e0530e5fbe3abeacb91f7d828bb.jpg'} className='profileCoverImg' alt="" />
                 <img src={user.profilePicture ||' https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'} className='profileUserImg' alt="profile pic" />
             </div>
@@ -44,7 +44,7 @@ const Profile = () => {
          
         </div>
         <div className="profileRightBottom">
-        <Feed userid={id}/>
+        <Feed userid={id} />
         <Rightbar profile />
         </div>
       </div>

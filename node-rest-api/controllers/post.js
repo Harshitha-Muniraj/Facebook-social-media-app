@@ -7,9 +7,9 @@ import { populate } from 'dotenv';
 export const createPost=async(req,res)=>{
    
    try {
-     
+      console.log("found user")
         let user=req.user;
-      
+        
         if(req.file.path==""){
          
          return customResponse(res,400,false,"No Link from Cloudinary",null)
@@ -54,7 +54,7 @@ export const myPosts=async(req,res)=>{
 export const timelinePost=async (req,res)=>{
 
    try{
-      
+      console.log("in time")
       const currentUser=await User.findById(req.params.id);
       console.log("hi")
       const userPosts=await Posts.find({postedby:currentUser._id});
@@ -64,8 +64,25 @@ export const timelinePost=async (req,res)=>{
             return Posts.find({postedby:friendId})
          })
       )
+      console.log("friendsPost")
       return customResponse(res,200,true,'Fetched timeline post',userPosts.concat(...friendsPosts))
    }catch(err){
       customResponse(res,500,false,"Failed to fetch timeline posts",null)
+   }
+}
+
+// like or dislike post
+export const likeDislike=async(req,res)=>{
+   try{
+   const post= await Posts.findById(req.params.id);
+   if(!post.likes.includes(req.body.userId)){
+      await post.updateOne({$push:{likes:req.body.userId}});
+      return customResponse(res,200,true,"Liked the picture",post)
+   }else{
+await post.updateOne({$pull:{likes:req.body.userId}});
+return customResponse(res,200,true,"Disliked the post",post)
+   }
+   }catch(err){
+      customResponse(res,500,false,"Didnt like or dislike the post",null)
    }
 }

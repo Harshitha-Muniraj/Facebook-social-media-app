@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 const TopBar = ({userpic}) => {
+    const id=localStorage.getItem("userid")
   return (
     <div className='topbarContainer'>
         <div className='topbarLeft'>
@@ -37,7 +38,7 @@ const TopBar = ({userpic}) => {
                     <span className='topbarIconBadge'>3</span>
                 </div>
             </div>
-            <img src={userpic} alt="profile-pic" className='topbarImg' />
+            <Link to={`/profile/${id}`}><img src={userpic }alt="profile-pic" className='topbarImg' /></Link>
         </div>
     </div>
   )
