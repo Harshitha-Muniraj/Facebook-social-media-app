@@ -18,13 +18,11 @@ const Share = () => {
        newPost.append("caption",caption.current.value)
        console.log(caption.current.value,newPost,file)
        if(file){
+        const headers={
+            "token":token
+        }
         try{
-            const response=await api.post(`/posts/uploadpost`,newPost,{
-                headers:{
-                    'token':token
-                }
-                
-            })
+            const response=await api.post(`/posts/uploadpost`,newPost,{headers})
             window.location.reload()
             console.log(response)
            }catch(err){

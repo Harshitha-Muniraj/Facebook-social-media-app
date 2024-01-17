@@ -31,15 +31,17 @@ const Feed = ({userid,token}) => {
      
   },[userid,])
   return (
+ 
     <div className='feed'>
       <div className='feedWrapper'>
-      <Share token={token}/>
+      {((!userid || (userid==id )))&& <Share token={token}/>}
       {
        posts.map((post)=> <Post key={post._id} post={post}/>)
       }
       </div>
       
     </div>
+    
   )
 }
 

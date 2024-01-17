@@ -3,8 +3,10 @@ import './TopBar.css';
 import { Link } from 'react-router-dom';
 
 
-const TopBar = ({userpic}) => {
-    const id=localStorage.getItem("userid")
+
+const TopBar = () => {
+    const id=localStorage.getItem("userid");
+    const profilePicture=localStorage.getItem("userpic")
   return (
     <div className='topbarContainer'>
         <div className='topbarLeft'>
@@ -38,7 +40,7 @@ const TopBar = ({userpic}) => {
                     <span className='topbarIconBadge'>3</span>
                 </div>
             </div>
-            <Link to={`/profile/${id}`}><img src={userpic }alt="profile-pic" className='topbarImg' /></Link>
+            <Link to={`/profile/${id}`}><img src={profilePicture }alt="profile-pic" className='topbarImg' /></Link>
         </div>
     </div>
   )

@@ -21,7 +21,7 @@ export const createPost=async(req,res)=>{
             img:req.file.path
             
         })
-        console.log('newuser',newuser)
+      
         
            const nUser=await newuser.save()
            return customResponse(res,200,true,"Link Add  to DB Sucessfully",nUser)
@@ -38,7 +38,7 @@ export const myPosts=async(req,res)=>{
     try{
       const currentUser=await User.findById(req.params.id)
       const currentPost=await Posts.find({postedby:currentUser._id});
-      console.log('cc',currentUser)
+      
       if(currentPost){
          return customResponse(res,200,true,"got all my posts",currentPost)
          
@@ -56,15 +56,15 @@ export const timelinePost=async (req,res)=>{
    try{
       console.log("in time")
       const currentUser=await User.findById(req.params.id);
-      console.log("hi")
+     
       const userPosts=await Posts.find({postedby:currentUser._id});
-      console.log('cu',userPosts)
+      
       const friendsPosts=await Promise.all(
          currentUser.following.map((friendId)=>{
             return Posts.find({postedby:friendId})
          })
       )
-      console.log("friendsPost")
+      
       return customResponse(res,200,true,'Fetched timeline post',userPosts.concat(...friendsPosts))
    }catch(err){
       customResponse(res,500,false,"Failed to fetch timeline posts",null)

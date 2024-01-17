@@ -53,7 +53,7 @@ export const instaUser=async(req,res)=>{
 }
 
 
-// profile picture
+// upload profile picture
 
 export const profilePicture=async(req,res)=>{
    
@@ -78,7 +78,7 @@ export const profilePicture=async(req,res)=>{
     }
  }
 
-// followuser
+// follow user
 export const followUser=async(req,res)=>{
     console.log('user',req.user.id)
     console.log('param',req.params.id)
@@ -87,48 +87,74 @@ export const followUser=async(req,res)=>{
           const user=await User.findById(req.params.id);
           
           const currentUser=await User.findById(req.user.id);
-          console.log("kavya",currentUser)
+          
           if(!user.followers.includes(req.user.id)){
             await user.updateOne({$push:{followers:req.user.id}});
             await currentUser.updateOne({$push:{following:req.params.id}});
-            currentUser(res,200,true,"User has been followed",currentUser)
+            return currentUser(res,200,true,"User has been followed",currentUser)
           }else{
-            customResponse(res,400,false,"You are already following this user")
+            return customResponse(res,400,false,"You are already following this user")
           }
 
        }catch(err){
-        customResponse(res,500,false,"Something went wrong",null)
+        return customResponse(res,500,false,"Something went wrong",null)
        }
     }else{
         customResponse(res,400,false,"You cannot follow yourself",null)
     }
 }
 
-// unfollowuser
+// unfollow user
 
 export const unfollowUser=async(req,res)=>{
-    if(req.body.user!==req.params.id){
+    
+    if(req.body.id!==req.params.id){
+    
        try{
           const user=await User.findById(req.params.id);
-          const currentUser=await User.findById(req.body.userId);
-          if(user.followers.includes(req.body.userId)){
-            await user.updateOne({$pull:{followers:req.body.userId}});
+          const currentUser=await User.findById(req.user.id);
+          console.log("user",user)
+          if(user.followers.includes(req.user.id)){
+            
+            const updateduser=await user.updateOne({$pull:{followers:req.user.id}});
+            let update=await updateduser.save();
+            console.log("uu",update)
             await currentUser.updateOne({$pull:{following:req.params.id}});
-            currentUser(res,200,true,"User has been unfollowed",currentUser)
+            return currentUser(res,200,true,"User has been unfollowed",currentUser)
           }else{
-            customResponse(res,400,false,"you dont follow this user")
+            return customResponse(res,400,false,"you dont follow this user")
           }
 
        }catch(err){
-        customResponse(res,500,false,"Something went wrong",null)
+        return customResponse(res,500,false,"Something went wrong",null)
        }
     }else{
-        customResponse(res,400,false,"You cannot unfollow yourself",null)
+        return customResponse(res,400,false,"You cannot unfollow yourself",null)
     }
 }
 
 
-
+// get friends
+export const getFriends=async(req,res)=>{
+    // let user=req.user;
+    // console.log("in token",user)
+    try{
+        const currentUser=await User.findById(req.params.id);
+        const friends=await Promise.all(
+            currentUser.following.map(friendId=>{
+                return User.findById(friendId)
+            })
+        )
+        let friendslist=[]
+        friends.map(friend=>{
+            const {_id,username,profilePicture}=friend;
+            friendslist.push({_id,username,profilePicture})
+        })
+        return customResponse(res,200,true,"Fetched all friendslist",friendslist)
+    }catch(err){
+        return customResponse(res,500,false,"Something went wrong while fetching friendlist ",null)
+    }
+}
 
 
 // .................Reset. Password...............................

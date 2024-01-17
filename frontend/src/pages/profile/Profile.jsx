@@ -21,7 +21,7 @@ const Profile = () => {
      
     }
     fetchUser()
-  },[])
+  },[id])
   
   
 
