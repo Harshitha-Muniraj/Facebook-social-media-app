@@ -15,7 +15,7 @@ const Post = ({post}) => {
       const fetchUser=async()=>{
         const response=await axios.get(`http://localhost:5000/api/users/${post.postedby}`);
         setUser(await response.data.data)
-        console.log(user)
+        console.log(response)
       }
       fetchUser() 
     },[post.postedby])

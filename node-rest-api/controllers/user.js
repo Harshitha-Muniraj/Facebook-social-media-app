@@ -89,11 +89,14 @@ export const followUser=async(req,res)=>{
           const currentUser=await User.findById(req.user.id);
           
           if(!user.followers.includes(req.user.id)){
-            await user.updateOne({$push:{followers:req.user.id}});
-            await currentUser.updateOne({$push:{following:req.params.id}});
-            return currentUser(res,200,true,"User has been followed",currentUser)
+            let nuser=await user.updateOne({$push:{followers:req.user.id}});
+            // console.log("nuser",nuser)
+            let cuser=await currentUser.updateOne({$push:{following:req.params.id}},{new:true});
+
+            console.log(cuser)
+            return customResponse(res,200,true,"User has been followed",currentUser)
           }else{
-            return customResponse(res,400,false,"You are already following this user")
+            return customResponse(res,400,false,"You are already following this user",currentUser)
           }
 
        }catch(err){
@@ -112,20 +115,20 @@ export const unfollowUser=async(req,res)=>{
     
        try{
           const user=await User.findById(req.params.id);
-          const currentUser=await User.findById(req.user.id);
+          const currentUser=await User.findById(req.body.id);
           console.log("user",user)
-          if(user.followers.includes(req.user.id)){
-            
-            const updateduser=await user.updateOne({$pull:{followers:req.user.id}});
-            let update=await updateduser.save();
-            console.log("uu",update)
-            await currentUser.updateOne({$pull:{following:req.params.id}});
-            return currentUser(res,200,true,"User has been unfollowed",currentUser)
+          if(user.followers.includes(req.body.id)){
+            await user.updateOne({$pull:{followers:req.body.id}});
+           
+            console.log("uu")
+           await currentUser.updateOne({$pull:{following:req.params.id}});
+            return customResponse(res,200,true,"User has been unfollowed",currentUser)
           }else{
-            return customResponse(res,400,false,"you dont follow this user")
+            return customResponse(res,400,false,"you dont follow this user",null)
           }
 
        }catch(err){
+        console.log("err",err)
         return customResponse(res,500,false,"Something went wrong",null)
        }
     }else{

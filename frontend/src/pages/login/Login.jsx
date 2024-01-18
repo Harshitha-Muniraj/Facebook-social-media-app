@@ -5,7 +5,7 @@ import axios from 'axios';
 import {Link,useNavigate} from "react-router-dom"
 
 const Login = () => {
-    let {username,setProfilePicture,setUsername,token,setToken,gmail,setGmail}=useContext(userContext);
+    let {username,setProfilePicture,setUsername,following,setFollowing,token,setToken,gmail,setGmail}=useContext(userContext);
     const navigate=useNavigate()
     
     const [email, setEmail] = useState('');
@@ -19,6 +19,7 @@ const Login = () => {
          })
          console.log("rr",response)
          if(response.data.success){
+          setFollowing([...following,response.data.data.following])
           setToken(response.data.data.token)
           setUsername(response.data.data.username)
           setGmail(response.data.data.email);

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../../customAxios/Axios';
+import userContext from '../../context/StyleContext';
 
 const ProfileRightBar = () => {
     const [friends,setFriends]=useState([])
@@ -8,7 +9,8 @@ const ProfileRightBar = () => {
     const {id}=useParams();
     const token=localStorage.getItem("token")
     const userid=localStorage.getItem("userid");
-   
+    const {following,setFollowing}=useContext(userContext)
+    console.log(following)
     useEffect(()=>{
        const getFriends=async()=>{
           try{
@@ -21,13 +23,24 @@ const ProfileRightBar = () => {
           }
        }
        getFriends()
-    },[id])
+    },[followed,id])
     const handleClick = async () => {
       
         try {
-            const responsone=await api.put("/users/"+id+"/unfollow",{headers:{"token":token}});
-                console.log(responsone) 
-       
+            if(followed){
+                const responsone=await api.put("/users/"+id+"/unfollow",{"id":userid});
+                console.log(responsone)
+            }
+            else {
+                const response=await api.put("users/"+id+"/follow",{
+                    headers:{
+                        "token":token
+                    }
+                })
+                console.log(response)
+            }
+           
+            
       } catch (err) {
         console.log(err)
     }

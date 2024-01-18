@@ -13,7 +13,7 @@ userRouter.delete("/:id",deleteUser);
 userRouter.get("/friendslist/:id",getFriends)
 userRouter.get('/:id',instaUser);
 userRouter.put('/:id/follow',checkLogin,followUser);
-userRouter.put('/:id/unfollow',checkLogin,unfollowUser);
+userRouter.put('/:id/unfollow',unfollowUser);
 userRouter.post('/profilepicture',checkLogin,parser.single('img'),profilePicture)
 
 

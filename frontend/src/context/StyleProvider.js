@@ -19,7 +19,7 @@ const StyleProvider = ({ children }) => {
     const [profilePicture,setProfilePicture]=useState(localStorage.getItem("userpic")?localStorage.getItem("userpic"):null)
     const [token,setToken]=useState(localStorage.getItem("token")?localStorage.getItem("token"):null)
     const [gmail,setGmail]=useState(localStorage.getItem("gmail")?localStorage.getItem("gmail"):null)
-
+    const [following,setFollowing]=useState([])
      const contextData={
         username:username,
         theme:theme,
@@ -31,8 +31,9 @@ const StyleProvider = ({ children }) => {
         profilePicture,
         setProfilePicture,
         lightMode: ()=>setTheme(lightTheme),
-        darkMode: ()=>setTheme(darkTheme)
-
+        darkMode: ()=>setTheme(darkTheme),
+        following,
+        setFollowing
      }
 
     return(
