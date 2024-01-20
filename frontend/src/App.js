@@ -8,7 +8,9 @@ import Register from "./pages/register/Register";
 import { UserContext } from "./context/UserContext";
 
 function App() {
-  const {theme,darkMode, lightMode}  =  useContext(UserContext)
+  
+  const {theme,darkMode, lightMode}  =  useContext(UserContext);
+  const user=localStorage.getItem("user")
   const [currentTheme, setCurrentTheme] = useState("lightMode");
   useEffect(()=>{
     const theme = localStorage.getItem("theme")
@@ -31,9 +33,12 @@ function App() {
     
    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register/>} />
+        
+        <Route exact path="/" element={user!={} ? <Home /> : <Register />}/>
+        <Route path="/login" element={<Login />}/>
+        <Route path="/register" element={<Register />}>
+          
+        </Route>
         <Route path="/profile/:id" element={<Profile/>} />
       </Routes>
    </BrowserRouter>

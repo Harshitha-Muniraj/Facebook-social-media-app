@@ -30,42 +30,13 @@ const Login = () => {
           localStorage.setItem("userid",res.data.data._id)
           localStorage.setItem("userpic",res.data.data.profilePicture)
           localStorage.setItem("token",res.data.data.token)
-          alert(res.data.message)
+         
           navigate("/")
         } catch (err) {
           dispatch({ type: "LOGIN_FAILURE", payload: err });
         }
       };
-      // try {
-      //   // let response= await axios.post("http://localhost:5000/api/auth/login",{
-      //   //   email,
-      //   //   password
-      //   //  })
-      //    console.log("rr",response)
-      //    if(response.data.success){
-      //     setFollowing([...following,response.data.data.following])
-      //     setToken(response.data.data.token)
-      //     setUsername(response.data.data.username)
-      //     setGmail(response.data.data.email);
-      //     setProfilePicture(response.data.data.profilePicture)
-      //     localStorage.setItem("userid",response.data.data._id)
-      //     localStorage.setItem("userpic",response.data.data.profilePicture)
-      //     localStorage.setItem("token",response.data.data.token)
-      //     console.log("login",token)
-      //     localStorage.setItem("username",username)
-      //     localStorage.setItem("gmail",response.data.data.email)
-      //     alert(response.data.message)
-      //     navigate("/")
-      //    }
-      //    else{
-          
-      //    alert(response.data.message)
-      //    }
-      
-      // } catch (error) {
-      //   console.log("err in login",error)
-      // } 
-    
+     
   return (
     <div className='login'>
         <div className="loginWrapper">
@@ -77,9 +48,15 @@ const Login = () => {
             </div>
             <div className="loginRight">
                 <form className="loginBox" onSubmit={handleLogin}>
-                    <input type="email" className='loginInput' placeholder='Email' onChange={(e)=>setEmail(e.target.value)} />
-                    <input type="password" className='loginInput' placeholder='Password' onChange={(e)=>setPassword(e.target.value)}/>
-                    <button className="loginButton" type='submit'>Log In</button>
+                    <input type="email" className='loginInput' required placeholder='Email' onChange={(e)=>setEmail(e.target.value)} />
+                    <input type="password" className='loginInput' required placeholder='Password' onChange={(e)=>setPassword(e.target.value)}/>
+                    <button className="loginButton" type='submit'  disabled={isFetching}>
+                    {isFetching ? (
+                <ion-icon name="refresh-outline"></ion-icon>
+              ) : (
+                "Log In"
+              )}
+                      </button>
                     <span className="loginForgot">Forgot Password?</span>
                     <Link to='/register'><button className="loginRegisterButton">Create a New Account</button></Link>
                 </form>
