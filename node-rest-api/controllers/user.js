@@ -78,20 +78,49 @@ export const profilePicture=async(req,res)=>{
     }
  }
 
+
+
+//  coverpicture
+
+export const coverPicture=async(req,res)=>{
+   
+    try {
+      
+         let user=req.user;
+        console.log(req.file.path)
+         if(req.file.path==""){
+          
+          return customResponse(res,400,false,"No Link from Cloudinary",null)
+         }else{
+            user.coverPicture=req.file.path
+            const nUser=await user.save()
+         console.log('newuser',user)
+         
+            
+            return customResponse(res,200,true,"Link Add  to DB Sucessfully",nUser)
+         }
+ }
+    catch(err){
+       return customResponse(res,500,false,"somethng went wrong while uploading picture",null) 
+    }
+ }
+
+
+
 // follow user
 export const followUser=async(req,res)=>{
-    console.log('user',req.user.id)
+    console.log('user',req.body.id)
     console.log('param',req.params.id)
-    if(req.user.id!==req.params.id){
+    if(req.body.id!==req.params.id){
        try{
           const user=await User.findById(req.params.id);
           
-          const currentUser=await User.findById(req.user.id);
+          const currentUser=await User.findById(req.body.id);
           
-          if(!user.followers.includes(req.user.id)){
-            let nuser=await user.updateOne({$push:{followers:req.user.id}});
+          if(!user.followers.includes(req.body.id)){
+            let nuser=await user.updateOne({$push:{followers:req.body.id}});
             // console.log("nuser",nuser)
-            let cuser=await currentUser.updateOne({$push:{following:req.params.id}},{new:true});
+            let cuser=await currentUser.updateOne({$push:{following:req.params.id}});
 
             console.log(cuser)
             return customResponse(res,200,true,"User has been followed",currentUser)
@@ -122,8 +151,9 @@ export const unfollowUser=async(req,res)=>{
            
             console.log("uu")
            await currentUser.updateOne({$pull:{following:req.params.id}});
-            return customResponse(res,200,true,"User has been unfollowed",currentUser)
+            return customResponse(res,200,true,"User has been unfollowed")
           }else{
+
             return customResponse(res,400,false,"you dont follow this user",null)
           }
 
@@ -135,7 +165,28 @@ export const unfollowUser=async(req,res)=>{
         return customResponse(res,400,false,"You cannot unfollow yourself",null)
     }
 }
-
+export const getAllUsers=async(req,res)=>{
+    let user=req.user;
+    const newArr = [...req.user.following, req.user._id];
+    console.log("newrr",newArr)
+    try{
+        const all=await User.aggregate([
+            { $match: { _id: { $nin:newArr }}}])
+        
+        const objs=all.map((item)=>{
+            return(
+               {
+                id:item._id,
+                username:item.username,
+                profilePicture:item.profilePicture
+            }
+            )
+        })
+        return customResponse(res,200,true,"all",objs)
+    }catch(err){
+        console.log(err)
+    }
+}
 
 // get friends
 export const getFriends=async(req,res)=>{

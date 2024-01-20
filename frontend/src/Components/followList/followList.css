@@ -2,6 +2,13 @@
     display: flex;
     margin-bottom: 15px;
     align-items: center;
+    justify-content: space-around;
+}
+
+.sidebarFriendList {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
 }
 .sidebarFriendImg{
     width: 32px;
@@ -10,3 +17,17 @@
     object-fit: cover;
     margin-right: 10px;
 }
+.suggesionFollowBtn{
+   margin-left: 40px;
+    border: none;
+    background-color: #1872f2;
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  

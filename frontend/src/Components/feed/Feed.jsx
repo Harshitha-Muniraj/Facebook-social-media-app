@@ -6,7 +6,7 @@ import api from '../../customAxios/Axios';
 import axios from 'axios';
 
 
-const Feed = ({userid,token}) => {
+const Feed = ({userid,userpic}) => {
   const id=localStorage.getItem("userid")
   const [posts,setPosts]=useState([]);
   console.log("posts",id)
@@ -34,7 +34,7 @@ const Feed = ({userid,token}) => {
  
     <div className='feed'>
       <div className='feedWrapper'>
-      {((!userid || (userid==id )))&& <Share token={token}/>}
+      {((!userid || (userid==id )))&& <Share userpic={userpic} />}
       {
        posts.map((post)=> <Post key={post._id} post={post}/>)
       }

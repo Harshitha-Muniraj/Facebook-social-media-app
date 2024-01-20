@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './TopBar.css';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 
 
-const TopBar = () => {
-    const id=localStorage.getItem("userid");
-    const profilePicture=localStorage.getItem("userpic")
+const TopBar = ({userpic}) => {
+    const {user}=useContext(UserContext)
   return (
     <div className='topbarContainer'>
         <div className='topbarLeft'>
@@ -40,7 +40,7 @@ const TopBar = () => {
                     <span className='topbarIconBadge'>3</span>
                 </div>
             </div>
-            <Link to={`/profile/${id}`}><img src={profilePicture }alt="profile-pic" className='topbarImg' /></Link>
+            <Link to={`/profile/${user._id}`}><img src={userpic }alt="profile-pic" className='topbarImg' /></Link>
         </div>
     </div>
   )

@@ -4,13 +4,12 @@ import api from '../../customAxios/Axios';
 import axios from 'axios';
 
 import userContext from '../../context/StyleContext'
-const Share = () => {
-    const {profilePicture,username}=useContext(userContext)
+import { UserContext } from '../../context/UserContext';
+const Share = ({userpic}) => {
+    const {user}=useContext(UserContext)
     const caption=useRef()
     const [file,setFile]=useState(null);
-    const token=localStorage.getItem("token")
-    const id=localStorage.getItem("userid")
-    console.log("token share",token)
+    
     const submitHandler=async(e)=>{
        e.preventDefault()
        const newPost=new FormData()
@@ -19,7 +18,7 @@ const Share = () => {
        console.log(caption.current.value,newPost,file)
        if(file){
         const headers={
-            "token":token
+            "token":user.token
         }
         try{
             const response=await api.post(`/posts/uploadpost`,newPost,{headers})
@@ -35,8 +34,8 @@ const Share = () => {
     <div className='share'>
         <div className="shareWrapper">
             <div className="shareTop">
-                <img src={profilePicture||'https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'} alt="userpic" className='shareProfileImg' />
-                <input placeholder={"Whats's in your mind" +` ${username}`} className='shareInput' ref={caption} />
+                <img src={userpic||'https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'} alt="userpic" className='shareProfileImg' />
+                <input placeholder={"Whats's in your mind" +` ${user.username}`} className='shareInput' ref={caption} />
             </div>
             <hr className='shareHr' />
             <form className="shareButtom" onSubmit={submitHandler}>

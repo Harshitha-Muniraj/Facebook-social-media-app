@@ -1,26 +1,44 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Sidebar.css';
+import api from '../../customAxios/Axios';
 import {Users} from '../../PostData';
 import FollowList from '../followList/followList';
 import StyleContext from '../../context/StyleContext.js';
+import { UserContext } from '../../context/UserContext.js';
 
 const Sidebar = () => {
-  const {theme,darkMode, lightMode}  =  useContext(StyleContext)
-  const [currentTheme, setCurrentTheme] = useState("lightMode");
-
-function switchTheme(){
-    if(currentTheme=="lightMode"){
-           setCurrentTheme("darkMode")
-           darkMode()
-           localStorage.setItem("theme","darkMode")
+    const [suggestion,setSuggestion]=useState([]);
+    const {user}=useContext(UserContext)
+    useEffect(()=>{
+      const getsuggestion=async()=>{
+        const headers={
+          "token":user.token
+      }
+        try{
+          const res=await api.get("/users/all/allusers",{headers});
+          setSuggestion(await res.data.data)
+        }catch(err){
+          console.log(err)
         }
-   else if(currentTheme=="darkMode"){
-           setCurrentTheme("lightMode")
-           lightMode()
-           localStorage.setItem("theme","lightMode")
-  }
+      }
+      getsuggestion()
+    },[user.following])
+  // const {theme,darkMode, lightMode}  =  useContext(StyleContext)
+  // const [currentTheme, setCurrentTheme] = useState("lightMode");
 
-}
+// function switchTheme(){
+//     if(currentTheme=="lightMode"){
+//            setCurrentTheme("darkMode")
+//            darkMode()
+//            localStorage.setItem("theme","darkMode")
+//         }
+//    else if(currentTheme=="darkMode"){
+//            setCurrentTheme("lightMode")
+//            lightMode()
+//            localStorage.setItem("theme","lightMode")
+//   }
+
+// }
   return (
     <div className='sidebar'>
       <div className='sidebarWrapper'>
@@ -47,7 +65,7 @@ function switchTheme(){
           </li>
           <li className="sidebarListItem">
             <ion-icon name="moon-outline" id='sidebarIcon'></ion-icon>
-            <span style={{cursor:'pointer'}} className="sidebarListItemText"  onClick={switchTheme}>Theme</span>
+            <span style={{cursor:'pointer'}} className="sidebarListItemText"  >Theme</span>
             
           </li>
         </ul>
@@ -55,7 +73,7 @@ function switchTheme(){
         <hr className='sidebarHr'/>
         <ul className='sidebarFriendList'>
           {
-            Users.map(user=><FollowList key={user.id} user={user}/>)
+            suggestion.map(sug=><FollowList key={sug.id} sug={sug}/>)
           }
           
         </ul>

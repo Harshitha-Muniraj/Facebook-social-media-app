@@ -14,6 +14,7 @@
     width: 100%;
     height: 250px;
     object-fit: cover;
+    position: relative;
 }
 .profileUserImg{
     width: 150px;height: 150px;
@@ -41,4 +42,20 @@
 }
 .profileRightBottom{
     display: flex;
+}
+#pp{
+    position: absolute;
+    bottom: 1%;
+    left: 52%;
+    cursor: pointer;
+}
+#cp{
+    position: absolute;
+    bottom: 70px;
+    left: 6px;
+    color: red;
+    cursor: pointer;
+}
+#file1,#file2{
+    display: none;
 }
