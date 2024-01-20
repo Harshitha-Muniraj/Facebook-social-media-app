@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../../customAxios/Axios';
-import userContext from '../../context/StyleContext';
+
 import { UserContext } from '../../context/UserContext';
 
 const ProfileRightBar = () => {

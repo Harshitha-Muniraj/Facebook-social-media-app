@@ -1,12 +1,10 @@
 import React, { useContext, useRef, useState } from 'react'
 import './Share.css';
 import api from '../../customAxios/Axios';
-import axios from 'axios';
 
-import userContext from '../../context/StyleContext'
 import { UserContext } from '../../context/UserContext';
 const Share = ({userpic}) => {
-    const {user}=useContext(UserContext)
+    const {user,pic}=useContext(UserContext)
     const caption=useRef()
     const [file,setFile]=useState(null);
     
@@ -34,7 +32,7 @@ const Share = ({userpic}) => {
     <div className='share'>
         <div className="shareWrapper">
             <div className="shareTop">
-                <img src={userpic||'https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'} alt="userpic" className='shareProfileImg' />
+                <img src={pic||'https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'} alt="userpic" className='shareProfileImg' />
                 <input placeholder={"Whats's in your mind" +` ${user.username}`} className='shareInput' ref={caption} />
             </div>
             <hr className='shareHr' />

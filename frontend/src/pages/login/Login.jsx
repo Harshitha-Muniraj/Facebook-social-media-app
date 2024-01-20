@@ -1,6 +1,6 @@
 import React,{useState,useContext} from 'react';
 import './Login.css';
-import userContext from '../../context/StyleContext';
+
 import axios from 'axios';
 import { loginCall } from "../../apiCall";
 import {Link,useNavigate} from "react-router-dom"
@@ -9,7 +9,12 @@ import { UserContext } from '../../context/UserContext';
 const Login = () => {
     // let {username,setProfilePicture,setUsername,following,setFollowing,token,setToken,gmail,setGmail}=useContext(userContext);
     const navigate=useNavigate()
-    const {dispatch,isFetching}=useContext(UserContext)
+    const {dispatch,isFetching, pic,
+      setPic,
+      userid,
+      setUserid,
+      token,
+      setToken}=useContext(UserContext)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
   
@@ -21,6 +26,10 @@ const Login = () => {
           const res = await axios.post("http://localhost:5000/api/auth/login", {email,password});
           console.log(res.data.data)
           dispatch({ type: "LOGIN_SUCCESS", payload: res.data.data });
+          setPic(res.data.data.profilePicture)
+          localStorage.setItem("userid",res.data.data._id)
+          localStorage.setItem("userpic",res.data.data.profilePicture)
+          localStorage.setItem("token",res.data.data.token)
           alert(res.data.message)
           navigate("/")
         } catch (err) {

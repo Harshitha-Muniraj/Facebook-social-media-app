@@ -3,12 +3,14 @@ import './Sidebar.css';
 import api from '../../customAxios/Axios';
 import {Users} from '../../PostData';
 import FollowList from '../followList/followList';
-import StyleContext from '../../context/StyleContext.js';
+
 import { UserContext } from '../../context/UserContext.js';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
     const [suggestion,setSuggestion]=useState([]);
     const {user}=useContext(UserContext)
+    let navigate=useNavigate();
     useEffect(()=>{
       const getsuggestion=async()=>{
         const headers={
@@ -23,22 +25,28 @@ const Sidebar = () => {
       }
       getsuggestion()
     },[user.following])
-  // const {theme,darkMode, lightMode}  =  useContext(StyleContext)
-  // const [currentTheme, setCurrentTheme] = useState("lightMode");
+  const {theme,darkMode, lightMode}  =  useContext(UserContext)
+  const [currentTheme, setCurrentTheme] = useState("lightMode");
+function logout(){
+  localStorage.setItem("user",JSON.stringify({}))
+  localStorage.setItem("userid",JSON.stringify(""))
+  localStorage.setItem("userpic",JSON.stringify(""))
+  
+  navigate("/login")
+}
+function switchTheme(){
+    if(currentTheme=="lightMode"){
+           setCurrentTheme("darkMode")
+           darkMode()
+           localStorage.setItem("theme","darkMode")
+        }
+   else if(currentTheme=="darkMode"){
+           setCurrentTheme("lightMode")
+           lightMode()
+           localStorage.setItem("theme","lightMode")
+  }
 
-// function switchTheme(){
-//     if(currentTheme=="lightMode"){
-//            setCurrentTheme("darkMode")
-//            darkMode()
-//            localStorage.setItem("theme","darkMode")
-//         }
-//    else if(currentTheme=="darkMode"){
-//            setCurrentTheme("lightMode")
-//            lightMode()
-//            localStorage.setItem("theme","lightMode")
-//   }
-
-// }
+}
   return (
     <div className='sidebar'>
       <div className='sidebarWrapper'>
@@ -65,7 +73,12 @@ const Sidebar = () => {
           </li>
           <li className="sidebarListItem">
             <ion-icon name="moon-outline" id='sidebarIcon'></ion-icon>
-            <span style={{cursor:'pointer'}} className="sidebarListItemText"  >Theme</span>
+            <span style={{cursor:'pointer'}} className="sidebarListItemText" onClick={switchTheme} >Theme</span>
+            
+          </li>
+          <li className="sidebarListItem">
+            <ion-icon name="log-out-outline" id='sidebarIcon'></ion-icon>
+            <span style={{cursor:'pointer'}} className="sidebarListItemText" onClick={logout} >Log out</span>
             
           </li>
         </ul>

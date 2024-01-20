@@ -15,7 +15,7 @@ const Profile = () => {
  
   const {id}=useParams();
  
-  const {user:currentuser}=useContext(UserContext)
+  const {user:currentuser,setPic}=useContext(UserContext)
   const [user,setUser]=useState([]);
   useEffect(()=>{
     const fetchUser=async()=>{
@@ -60,8 +60,11 @@ const Profile = () => {
        }
        try{
            const response=await api.post(`/users/profilepicture`,newPost,{headers})
-           window.location.reload()
            console.log('resp',response)
+           localStorage.setItem("userpic",response.data.data.profilePicture)
+           console.log(setPic(await response.data.data.profilePicture))
+           window.location.reload()
+           
           }catch(err){
            console.log(err)
           }
@@ -75,7 +78,7 @@ const Profile = () => {
 
   return (
     <div >
-    <TopBar userpic={user.profilePicture}/>
+    <TopBar />
     <div className="profile">
       <Sidebar/>
       <div className="profileRight">

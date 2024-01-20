@@ -5,8 +5,9 @@ import { UserContext } from '../../context/UserContext';
 
 
 
-const TopBar = ({userpic}) => {
-    const {user}=useContext(UserContext)
+const TopBar = () => {
+    const {user,pic}=useContext(UserContext);
+    
   return (
     <div className='topbarContainer'>
         <div className='topbarLeft'>
@@ -40,7 +41,7 @@ const TopBar = ({userpic}) => {
                     <span className='topbarIconBadge'>3</span>
                 </div>
             </div>
-            <Link to={`/profile/${user._id}`}><img src={userpic }alt="profile-pic" className='topbarImg' /></Link>
+            <Link to={`/profile/${user._id}`}><img src={pic||' https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'}alt="profile-pic" className='topbarImg' /></Link>
         </div>
     </div>
   )
