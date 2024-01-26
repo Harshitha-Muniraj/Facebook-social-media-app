@@ -9,15 +9,19 @@ import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
     const [suggestion,setSuggestion]=useState([]);
-    const {user}=useContext(UserContext)
+    const {user}=useContext(UserContext);
+    const token=localStorage.getItem("token")
+    
     let navigate=useNavigate();
     useEffect(()=>{
       const getsuggestion=async()=>{
-        const headers={
-          "token":user.token
-      }
+     
         try{
-          const res=await api.get("/users/all/allusers",{headers});
+          const res=await api.get("/users/all/allusers",{
+            headers:{
+              "token":token
+            }
+          });
           setSuggestion(await res.data.data)
         }catch(err){
           console.log(err)
@@ -28,7 +32,7 @@ const Sidebar = () => {
   const {theme,darkMode, lightMode}  =  useContext(UserContext)
   const [currentTheme, setCurrentTheme] = useState("lightMode");
 function logout(){
-  localStorage.setItem("user",JSON.stringify({}))
+  localStorage.setItem("user",JSON.stringify(""))
   localStorage.setItem("userid",JSON.stringify(""))
   localStorage.setItem("userpic",JSON.stringify(""))
   

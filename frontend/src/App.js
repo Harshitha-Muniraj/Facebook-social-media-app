@@ -10,7 +10,8 @@ import { UserContext } from "./context/UserContext";
 function App() {
   
   const {theme,darkMode, lightMode}  =  useContext(UserContext);
-  const user=localStorage.getItem("user")
+  const user=JSON.parse(localStorage.getItem("user"))
+  console.log("user",user)
   const [currentTheme, setCurrentTheme] = useState("lightMode");
   useEffect(()=>{
     const theme = localStorage.getItem("theme")
@@ -33,11 +34,9 @@ function App() {
     
    <BrowserRouter>
       <Routes>
-        
-        <Route exact path="/" element={user!={} ? <Home /> : <Register />}/>
+        <Route exact path="/" element={user=="" ?<Register />:<Home />}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}>
-          
         </Route>
         <Route path="/profile/:id" element={<Profile/>} />
       </Routes>

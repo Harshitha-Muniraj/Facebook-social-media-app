@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-// import StyleProvider from './context/StyleProvider';
+
 import App from './App';
 import { UserContextProvider } from './context/UserContext';
 
@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <UserContextProvider>
     <App />
-    </UserContextProvider>
+  </UserContextProvider>
   
 );
 

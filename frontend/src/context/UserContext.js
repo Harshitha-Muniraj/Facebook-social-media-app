@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer, useState } from "react";
 import UserReducer from "./UserReducer";
 
 const INITIAL_STATE = {
-  user:JSON.parse(localStorage.getItem("user"))|| {},
+  user:JSON.parse(localStorage.getItem("user"))|| "",
   isFetching: false,
   error: false,
 

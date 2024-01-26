@@ -8,11 +8,11 @@ const FollowList = ({sug}) => {
 
   const {user,dispatch}=useContext(UserContext)
   const handleClick = async (id) => {
-      console.log("in log",user)
+    
     try {
         if(followed){
             const responsone=await api.put("/users/"+id+"/unfollow",{"id":user._id});
-            console.log(responsone)
+            
             dispatch({ type: "UNFOLLOW", payload:id });
         }
         else {
@@ -20,7 +20,7 @@ const FollowList = ({sug}) => {
             const response=await api.put("users/"+id+"/follow",{
                 "id":user._id
             })
-            console.log(response)
+           
             dispatch({ type: "FOLLOW", payload:id });
         }
        setFollowed(!followed)

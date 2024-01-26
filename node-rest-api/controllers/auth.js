@@ -68,79 +68,79 @@ export const Login=async(req,res)=>{
     }
     
 }
-// .....sendMail..
+// // .....sendMail..
 
 
-// ...................otp generator.....
-const generateOtp = () => {
-    let otp = "";
-    // let char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-    for(let i=0;i<6;i++){
-        otp += Math.floor(Math.random()*10);
-    }
-    return otp;
+// // ...................otp generator.....
+// const generateOtp = () => {
+//     let otp = "";
+//     // let char = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+//     for(let i=0;i<6;i++){
+//         otp += Math.floor(Math.random()*10);
+//     }
+//     return otp;
 
-}
+// }
 
-// ............forgott password.............if the user forgot  his password we will send otp to user email
-export const SendOtp=async(req,res)=>{
-    try {
-     let {email}=req.body
-     if(!email){
-       return customResponse(res,400,false,"Enter your Email",null)
-     }
-     let exist=await User.findOne({email})
-     if(exist ==null){
-       return customResponse(res,400,false,"User is Not Registered",null)
-     }
-      // ..adding otp to db..
+// // ............forgott password.............if the user forgot  his password we will send otp to user email
+// export const SendOtp=async(req,res)=>{
+//     try {
+//      let {email}=req.body
+//      if(!email){
+//        return customResponse(res,400,false,"Enter your Email",null)
+//      }
+//      let exist=await User.findOne({email})
+//      if(exist ==null){
+//        return customResponse(res,400,false,"User is Not Registered",null)
+//      }
+//       // ..adding otp to db..
    
-     let otp=generateOtp()
-     exist.verificationCode=otp
-     await exist.save()
+//      let otp=generateOtp()
+//      exist.verificationCode=otp
+//      await exist.save()
      
-     sendEmail({
-       to:email,
-       subject:"OTP for forgot password!",
-       text:otp
-     })
-     return customResponse(res,200,true,"OTP sent sucessfully",exist)  
+//      sendEmail({
+//        to:email,
+//        subject:"OTP for forgot password!",
+//        text:otp
+//      })
+//      return customResponse(res,200,true,"OTP sent sucessfully",exist)  
      
-    } catch (error) {
-     return customResponse(res,500,false,"something went wrong",null)
-    }
+//     } catch (error) {
+//      return customResponse(res,500,false,"something went wrong",null)
+//     }
    
-   }
+//    }
 
 
 
-export  const ForgotPassword=async(req,res)=>{
-    let {email,otp,password,confirmPassword}=req.body
-    console.log(req.body)
-    if(!email || !otp || !password || !confirmPassword){
-      return customResponse(res,200,false,"Required all fields",null)
-    }
-    try {
-      let exist = await User.findOne({ email });
-      console.log(exist);
-      if (exist == null) {
-          return customResponse(res,200,false,"Enter Valid Email",null)
-      }
-      if(password!==confirmPassword){
-        return customResponse(res,400,false,"Password and Confirm-Password Must be same",null)
-      }
-      if(otp!=exist.verificationCode){
-        return customResponse(res,400,false,"Invalid OTP",null)
-      }
-      let hashPassword = await bcrypt.hash(password, 10);
-      exist.password=hashPassword
-      await exist.save()
-      return customResponse(res,200,true,"Password changed Successfully",exist)
+// export  const ForgotPassword=async(req,res)=>{
+//     let {email,otp,password,confirmPassword}=req.body
+//     console.log(req.body)
+//     if(!email || !otp || !password || !confirmPassword){
+//       return customResponse(res,200,false,"Required all fields",null)
+//     }
+//     try {
+//       let exist = await User.findOne({ email });
+//       console.log(exist);
+//       if (exist == null) {
+//           return customResponse(res,200,false,"Enter Valid Email",null)
+//       }
+//       if(password!==confirmPassword){
+//         return customResponse(res,400,false,"Password and Confirm-Password Must be same",null)
+//       }
+//       if(otp!=exist.verificationCode){
+//         return customResponse(res,400,false,"Invalid OTP",null)
+//       }
+//       let hashPassword = await bcrypt.hash(password, 10);
+//       exist.password=hashPassword
+//       await exist.save()
+//       return customResponse(res,200,true,"Password changed Successfully",exist)
   
-    } catch (error) {
-      customResponse(res,500,false,"something went wrong",null)
-    }
+//     } catch (error) {
+//       customResponse(res,500,false,"something went wrong",null)
+//     }
    
   
   
-  }
+//   }

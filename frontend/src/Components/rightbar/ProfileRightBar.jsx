@@ -10,7 +10,7 @@ const ProfileRightBar = () => {
     const {id}=useParams();
     
     const [followed, setFollowed] = useState(true)
-    console.log("ss",user.following.includes(id))
+    // console.log("ss",id,user.following.includes(id))
     const token=localStorage.getItem("token")
     const userid=localStorage.getItem("userid");
     
@@ -31,23 +31,7 @@ const ProfileRightBar = () => {
   
     },[followed,user.following,id])
 
-    // const handleClick = async () => {
-    //     try {
-    //       if (followed) {
-    //         await axios.put(`/users/${user._id}/unfollow`, {
-    //           userId: currentUser._id,
-    //         });
-    //         dispatch({ type: "UNFOLLOW", payload: user._id });
-    //       } else {
-    //         await axios.put(`/users/${user._id}/follow`, {
-    //           userId: currentUser._id,
-    //         });
-    //         dispatch({ type: "FOLLOW", payload: user._id });
-    //       }
-    //       setFollowed(!followed);
-    //     } catch (err) {
-    //     }
-    //   };
+    
     const handleClick = async () => {
       console.log("in handle")
         try {
@@ -69,14 +53,16 @@ const ProfileRightBar = () => {
       } catch (err) {
         console.log(err)
     }
+    console.log(".....")
     setFollowed(!followed)
 }
   return (
     <>
      {userid !== id && (
           <button className="rightbarFollowButton" onClick={handleClick}>
-            {followed==true ? "Unfollow" : "Follow"}
-            {followed==true ? <ion-icon name="remove"></ion-icon>: <ion-icon name="add"></ion-icon>}
+           
+            {followed? "Unfollow" : "Follow"}
+            {followed ? <ion-icon name="remove"></ion-icon>: <ion-icon name="add"></ion-icon>}
           </button>
         )}
     <h4 className="rightbarTitle">User Information</h4>

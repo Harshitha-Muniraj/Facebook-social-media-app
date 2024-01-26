@@ -4,10 +4,6 @@ import multer from 'multer';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// access from .env 
-console.log(process.env.CLOUDINARY_CLOUD_NAME)
-console.log(process.env.CLOUDINARY_API_KEY)
-console.log(process.env.CLOUDINARY_SECRET_KEY)
 
 cloudinary.config({ 
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 

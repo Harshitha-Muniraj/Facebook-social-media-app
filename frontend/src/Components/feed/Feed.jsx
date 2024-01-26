@@ -1,44 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Feed.css';
 import Share from '../share/Share';
 import Post from '../post/Post';
 import api from '../../customAxios/Axios';
-import axios from 'axios';
+import { UserContext } from '../../context/UserContext';
+
 
 
 const Feed = ({userid,userpic}) => {
-  const id=localStorage.getItem("userid")
+  const id=localStorage.getItem("userid");
+  const {user,pic}=useContext(UserContext)
   const [posts,setPosts]=useState([]);
-  console.log("posts",id)
+  const [loading,setLoading]=useState(false)
   useEffect(()=>{
     
    async function fetchMyPosts(){
-
+     
       const response=await api.get(`/posts/getmyposts/${userid}`);
-      setPosts(await response.data.data)
-      console.log("iddd",userid)
-    }
-    async function fetchPosts(){
-      
-      const response=await api.get("/posts/timeline/"+id);
-      console.log("................")
+    
       setPosts(await response.data.data.sort((p1,p2)=>{
         return new Date(p2.createdAt)-new Date(p1.createdAt)
       }))
+    }
+    async function fetchPosts(){
+      setLoading(true)
+      const response=await api.get("/posts/timeline/"+id);
       
+      setPosts(await response.data.data.sort((p1,p2)=>{
+        return new Date(p2.createdAt)-new Date(p1.createdAt)
+      }))
+      setLoading(false)
     }
     {userid ? fetchMyPosts() : fetchPosts()}
      
-  },[userid,])
+  },[userid,user,posts.length,])
   return (
  
     <div className='feed'>
+      
+      {loading? <div>Loading....</div>:
       <div className='feedWrapper'>
-      {((!userid || (userid==id )))&& <Share userpic={userpic} />}
+      {((!userid || (userid==id )))&& <Share userpic={pic} />}
       {
        posts.map((post)=> <Post key={post._id} post={post}/>)
       }
-      </div>
+      </div>}
+      
       
     </div>
     

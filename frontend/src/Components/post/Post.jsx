@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Post.css';
 import axios from 'axios';
 import {format} from 'timeago.js';
 import {Link} from 'react-router-dom'
-// import {Users } from '../../PostData';
+import { UserContext } from '../../context/UserContext';
+
 
 const Post = ({post}) => {
- 
+ const {pic}=useContext(UserContext)
     const [like,setLike]=useState(post.likes.length);
     const [isLiked,setIsLiked]=useState(false);
     const [user,setUser]=useState({});
@@ -15,10 +16,10 @@ const Post = ({post}) => {
       const fetchUser=async()=>{
         const response=await axios.get(`http://localhost:5000/api/users/${post.postedby}`);
         setUser(await response.data.data)
-        console.log(response)
+        
       }
       fetchUser() 
-    },[post.postedby])
+    },[post.postedby,pic])
 useEffect(()=>{
   setIsLiked(post.likes.includes(id))
 },[id,post.likes])

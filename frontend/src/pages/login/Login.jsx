@@ -2,19 +2,16 @@ import React,{useState,useContext} from 'react';
 import './Login.css';
 
 import axios from 'axios';
-import { loginCall } from "../../apiCall";
+
 import {Link,useNavigate} from "react-router-dom"
 import { UserContext } from '../../context/UserContext';
 
 const Login = () => {
     // let {username,setProfilePicture,setUsername,following,setFollowing,token,setToken,gmail,setGmail}=useContext(userContext);
     const navigate=useNavigate()
-    const {dispatch,isFetching, pic,
+    const {dispatch,isFetching,error,pic,
       setPic,
-      userid,
-      setUserid,
-      token,
-      setToken}=useContext(UserContext)
+      }=useContext(UserContext)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
   
@@ -24,16 +21,17 @@ const Login = () => {
         dispatch({ type: "LOGIN_START" });
         try {
           const res = await axios.post("http://localhost:5000/api/auth/login", {email,password});
-          console.log(res.data.data)
+          
           dispatch({ type: "LOGIN_SUCCESS", payload: res.data.data });
-          setPic(res.data.data.profilePicture)
+          setPic(await res.data.data.profilePicture)
           localStorage.setItem("userid",res.data.data._id)
-          localStorage.setItem("userpic",res.data.data.profilePicture)
+          localStorage.setItem("userpic",pic)
           localStorage.setItem("token",res.data.data.token)
          
           navigate("/")
         } catch (err) {
           dispatch({ type: "LOGIN_FAILURE", payload: err });
+          
         }
       };
      
@@ -48,11 +46,12 @@ const Login = () => {
             </div>
             <div className="loginRight">
                 <form className="loginBox" onSubmit={handleLogin}>
+                  
                     <input type="email" className='loginInput' required placeholder='Email' onChange={(e)=>setEmail(e.target.value)} />
                     <input type="password" className='loginInput' required placeholder='Password' onChange={(e)=>setPassword(e.target.value)}/>
                     <button className="loginButton" type='submit'  disabled={isFetching}>
                     {isFetching ? (
-                <ion-icon name="refresh-outline"></ion-icon>
+                <ion-icon name="refresh"></ion-icon>
               ) : (
                 "Log In"
               )}

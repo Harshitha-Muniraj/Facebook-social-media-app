@@ -167,6 +167,7 @@ export const unfollowUser=async(req,res)=>{
 }
 export const getAllUsers=async(req,res)=>{
     let user=req.user;
+    console.log("ushhhhhh",user)
     const newArr = [...req.user.following, req.user._id];
     console.log("newrr",newArr)
     try{

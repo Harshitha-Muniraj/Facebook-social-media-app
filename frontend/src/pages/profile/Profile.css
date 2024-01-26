@@ -4,6 +4,7 @@
 }
 .profileRight{
     flex: 9;
+    height: 400px;
 }
 .profileCover{
     height: 320px;
