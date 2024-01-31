@@ -41,7 +41,7 @@ const TopBar = () => {
                     <span className='topbarIconBadge'>3</span>
                 </div>
             </div>
-            <Link to={ `/profile/${user._id}`}><img src={user.profilePicture||' https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'} alt="profile-pic" className='topbarImg'  /></Link>
+            <Link to={ `/profile/${user._id}`}><img src={pic||' https://lastinch.in/wp-content/uploads/2020/09/blank-user.gif'} alt="profile-pic" className='topbarImg'  /></Link>
         </div>
     </div>
   )

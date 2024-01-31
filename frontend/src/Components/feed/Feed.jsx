@@ -7,10 +7,11 @@ import { UserContext } from '../../context/UserContext';
 
 
 
-const Feed = ({userid,userpic}) => {
+const Feed = ({userid}) => {
   const id=localStorage.getItem("userid");
   const {user,pic}=useContext(UserContext)
   const [posts,setPosts]=useState([]);
+
   const [loading,setLoading]=useState(false)
   useEffect(()=>{
     
@@ -33,14 +34,14 @@ const Feed = ({userid,userpic}) => {
     }
     {userid ? fetchMyPosts() : fetchPosts()}
      
-  },[userid,user,posts.length,])
+  },[userid,user])
   return (
  
     <div className='feed'>
       
       {loading? <div>Loading....</div>:
       <div className='feedWrapper'>
-      {((!userid || (userid==id )))&& <Share userpic={pic} />}
+      {((!userid || (userid==id )))&& <Share  />}
       {
        posts.map((post)=> <Post key={post._id} post={post}/>)
       }

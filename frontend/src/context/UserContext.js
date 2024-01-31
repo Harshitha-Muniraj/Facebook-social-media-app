@@ -24,7 +24,7 @@ const lightTheme = {
 }
 export const UserContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(UserReducer, INITIAL_STATE);
-  const [username,setUsername]=useState(localStorage.getItem("username")?localStorage.getItem("username"):null)
+  
     const [theme, setTheme] = useState(lightTheme);
   
   const [pic,setPic]=useState(localStorage.getItem("userpic")?localStorage.getItem("userpic"):null)

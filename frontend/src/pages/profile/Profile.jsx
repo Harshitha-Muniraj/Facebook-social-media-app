@@ -4,7 +4,7 @@ import TopBar from '../../Components/topBar/TopBar'
 import Sidebar from '../../Components/sidebar/Sidebar'
 import Feed from '../../Components/feed/Feed';
 import Rightbar from '../../Components/rightbar/Rightbar';
-import axios from 'axios';
+
 import { useParams } from 'react-router-dom';
 import api from '../../customAxios/Axios';
 import { UserContext } from '../../context/UserContext';

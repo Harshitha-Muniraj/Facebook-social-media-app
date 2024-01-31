@@ -1,7 +1,7 @@
 import customResponse from '../utilities/customResponse.js';
 import Posts from '../model/Post.modal.js';
 import User from '../model/User.modal.js';
-import { populate } from 'dotenv';
+
 
 // createpost
 export const createPost=async(req,res)=>{
@@ -34,7 +34,7 @@ export const createPost=async(req,res)=>{
 
 
 export const myPosts=async(req,res)=>{
-   // console.log('rr',req.user.id)
+ 
     try{
       const currentUser=await User.findById(req.params.id)
       const currentPost=await Posts.find({postedby:currentUser._id});

@@ -7,7 +7,7 @@ import {Link,useNavigate} from "react-router-dom"
 import { UserContext } from '../../context/UserContext';
 
 const Login = () => {
-    // let {username,setProfilePicture,setUsername,following,setFollowing,token,setToken,gmail,setGmail}=useContext(userContext);
+    
     const navigate=useNavigate()
     const {dispatch,isFetching,error,pic,
       setPic,

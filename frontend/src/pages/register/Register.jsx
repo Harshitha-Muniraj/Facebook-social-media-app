@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState } from 'react';
 import './Register.css';
 import axios from 'axios'
 import {Link,useNavigate} from 'react-router-dom'
@@ -16,13 +16,14 @@ const Register = () => {
             email,
             password
            })
-           console.log("userdetails: ",response.data.message)
+          
            alert(response.data.message)
            if(response.data.success){
             return navigate("/login")
            }
         } catch (error) {
           console.log("err in sign up",error)
+          alert("Error Sign Up")
         }
      
       };
